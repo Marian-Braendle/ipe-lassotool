@@ -28,7 +28,7 @@ Additive selection can be performed by holding the _shift_ key.
 
 ## Installation
 
-Copy [lassotool.lua](lassotol.lua) to a location found by IPE.
+Copy [lassotool.lua](lassotool.lua) to a location found by IPE.
 
 (Normally this is `~/.ipe/ipelets` for Linux and `%userprofile%\ipelets` for Windows (see Help->Show configuration))
 
