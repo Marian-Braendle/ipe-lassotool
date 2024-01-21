@@ -1,7 +1,8 @@
 # Lasso Tool Ipelet
 
 This Ipelet implements a Lasso Tool in [Ipe](https://ipe.otfried.org/).
-The main difference to the normal, rectangular selection tool is that arbitrary selection polygons can be drawn. Furthermore, not the bounding boxes of objects are considered, but their actual geometry.
+
+The main difference to the normal, rectangular selection tool is that arbitrary selection polygons can be drawn. Furthermore, for the selection not the bounding boxes of objects are considered, but their actual geometry.
 
 ## Usage
 
@@ -11,12 +12,12 @@ Additive selection can be performed by holding the _shift_ key.
 ### Selection that cannot be performed by rectangular selection
 
 ![Select multiple objects](img/select_multi.gif)
-(*Note: Ipe is not actual lagging, it's only the video produced by the capturing software...*)
+(*Note: Ipe is not actually lagging, it's only the video produced by the capturing software...*)
 
 ### Correctly select different types of objects
 
 ![Select different objects](img/select_different_objects.gif)
-(*Note: Ipe is not actual lagging, it's only the video produced by the capturing software...*)
+(*Note: Ipe is not actually lagging, it's only the video produced by the capturing software...*)
 
 ### Select many objects at once
 
@@ -25,7 +26,8 @@ Additive selection can be performed by holding the _shift_ key.
 ## Installation
 
 Copy [lassotool.lua](lassotol.lua) to a location found by IPE.
-Normally this is `~/.ipe/ipelets` for Linux and `%userprofile%\ipelets` for Windows (see Help->Show configuration).
+
+(Normally this is `~/.ipe/ipelets` for Linux and `%userprofile%\ipelets` for Windows (see Help->Show configuration))
 
 
 ## Technical Details & Lessons Learned
