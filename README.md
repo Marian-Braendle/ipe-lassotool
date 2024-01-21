@@ -6,7 +6,10 @@ The main difference to the normal, rectangular selection tool is that arbitrary 
 
 ## Usage
 
-Just start dragging the mouse to draw a selection polygon. If you release the mouse, the objects inside the polygon are selected.
+Select `Ipelets -> Lasso Select` or use the configured shortcut to enter the selection mode.
+
+Start dragging the mouse to draw a selection polygon.
+If you release the mouse, the objects inside the polygon are selected.
 Additive selection can be performed by holding the _shift_ key.
 
 ### Selection that cannot be performed by rectangular selection
