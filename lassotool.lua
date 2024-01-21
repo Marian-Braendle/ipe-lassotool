@@ -1,4 +1,3 @@
-
 label = "Lasso Select"
 about = [[
 Implementation of a Lasso Selection Tool
@@ -292,7 +291,7 @@ end
 function LASSOTOOL:applySelection()
     -- For optimization, ignore objects whose bbox is not completely within the bbox of the lasso tool
     --[[     FIXME: Unfortunately, for all objects except for text objects, the bbox is incorrectly
-           calculated for "rigid" and "translation" transformation types
+           calculated for "rigid" and "translation" transformation types (see https://github.com/otfried/ipe/issues/493)
            --> for now, consider all objects until fixed by Ipe ]]
     -- local lassoBbox = R()
     -- for _, seg in ipairs(self.path) do
