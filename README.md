@@ -15,12 +15,10 @@ Additive selection can be performed by holding the _shift_ key.
 ### Selection that cannot be performed by rectangular selection
 
 ![Select multiple objects](img/select_multi.gif)
-(*Note: Ipe is not actually lagging, it's only the video produced by the capturing software...*)
 
 ### Correctly select different types of objects
 
 ![Select different objects](img/select_different_objects.gif)
-(*Note: Ipe is not actually lagging, it's only the video produced by the capturing software...*)
 
 ### Select many objects at once
 
