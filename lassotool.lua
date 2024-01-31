@@ -10,9 +10,10 @@ local LASSO_COLOR = { 1.0, 0, 1.0 }
 local LASSO_FIDELITY = 1
 local POLYLINE_FIDELITY = 1
 
-shortcuts.ipelet_1_lassotool = "Ctrl+Shift+D"
+-- shortcuts.ipelet_1_lassotool = "Ctrl+Shift+D"
 
 ---Global constants/functions
+transformShape = _G.transformShape
 V = ipe.Vector
 R = ipe.Rect
 M = ipe.Matrix
@@ -23,25 +24,6 @@ EYE = M()
 local SELECT_TYPE = { notSelected = nil, primarySelected = 1, secondarySelected = 2 }
 
 ------------------ Helper Functions ------------------
-local function transformShape(matrix, shape) -- Copied from main.lua
-    for _, path in ipairs(shape) do
-        if path.type == "ellipse" or path.type == "closedspline" then
-            for i = 1, #path do
-                path[i] = matrix * path[i]
-            end
-        else -- must be "curve"
-            for _, seg in ipairs(path) do
-                for i = 1, #seg do
-                    seg[i] = matrix * seg[i]
-                end
-                if seg.type == "arc" then
-                    seg.arc = matrix * seg.arc
-                end
-            end
-        end
-    end
-end
-
 ---Ramer-Douglas-Peucker algorithm (https://en.wikipedia.org/wiki/Ramer%E2%80%93Douglas%E2%80%93Peucker_algorithm)
 local function rpd(points, iStart, iEnd, epsilon)
     local dMax, iMax = 0, 0
