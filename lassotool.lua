@@ -13,7 +13,8 @@ local POLYLINE_FIDELITY = 1
 -- shortcuts.ipelet_1_lassotool = "Ctrl+Shift+D"
 
 ---Global constants/functions
-transformShape = _G.transformShape
+_, _, MAJOR, MINOR, PATCH = string.find(config.version, "(%d+).(%d+).(%d+)")
+IPELIB_VERSION = 10000*MAJOR + 100*MINOR + PATCH
 V = ipe.Vector
 R = ipe.Rect
 M = ipe.Matrix
@@ -53,7 +54,6 @@ local function simplifyPolyLine(path, model)
     for i = 2, #poinsOpt do
         newPath[#newPath + 1] = { type = "segment", poinsOpt[i - 1], poinsOpt[i] }
     end
-    -- print(#path, "->",#newPath)
     return newPath
 end
 
@@ -222,7 +222,7 @@ function LASSOTOOL:containsObjectExact(obj, m)
     local objType = obj:type()
     if objType == "path" then
         local shape = obj:shape()
-        transformShape(correctedObjectMatrix(obj, m * obj:matrix()), shape)
+        _G.transformShape(correctedObjectMatrix(obj, m * obj:matrix()), shape)
         return self:containsShape(shape)
     elseif objType == "reference" then
         return self:containsPoint(m * obj:matrix() * obj:position())
@@ -249,7 +249,7 @@ function LASSOTOOL:containsObjectExact(obj, m)
             { type = "segment", pos + ipe.Vector(width, totalHeight), pos + ipe.Vector(0, totalHeight) }
         } }
         local trafo = correctedObjectMatrix(obj, m * obj:matrix() * ipe.Translation(obj:position()))
-        transformShape(trafo, shape)
+        _G.transformShape(trafo, shape)
         return self:containsShape(shape)
     elseif objType == "image" then
         -- Get bbox of untransformed image & apply forward transform again
@@ -263,7 +263,7 @@ function LASSOTOOL:containsObjectExact(obj, m)
             { type = "segment", V(topRight.x, bottomLeft.y), topRight },
             { type = "segment", topRight,                    V(bottomLeft.x, topRight.y) }
         } }
-        transformShape(correctedObjectMatrix(obj, m * mImage), shape)
+        _G.transformShape(correctedObjectMatrix(obj, m * mImage), shape)
         return self:containsShape(shape)
     else
         print("[ERROR] unsupported type " .. objType)
@@ -271,14 +271,10 @@ function LASSOTOOL:containsObjectExact(obj, m)
 end
 
 function LASSOTOOL:applySelection()
-    -- For optimization, ignore objects whose bbox is not completely within the bbox of the lasso tool
-    --[[     FIXME: Unfortunately, for all objects except for text objects, the bbox is incorrectly
-           calculated for "rigid" and "translation" transformation types (see https://github.com/otfried/ipe/issues/493)
-           --> for now, consider all objects until fixed by Ipe ]]
-    -- local lassoBbox = R()
-    -- for _, seg in ipairs(self.path) do
-    --     lassoBbox:add(seg[2])
-    -- end
+    local lassoBbox = R()
+    for _, seg in ipairs(self.path) do
+        lassoBbox:add(seg[2])
+    end
 
     -- Here, we mimic the behavior of the SelectTool (see ipetool.cpp)
     local newPrim = nil
@@ -286,8 +282,11 @@ function LASSOTOOL:applySelection()
     for i, obj, sel, layer in self.page:objects() do
         -- Object is in view and not in a locked layer
         if self.page:visible(self.model.vno, i) and not self.page:isLocked(layer) then
-            -- local objBbox = R()
-            -- if lassoBbox:contains(objBbox) then
+            local objBbox = R()
+            obj:addToBBox(objBbox, EYE)
+            -- For optimization, ignore objects whose bbox is not completely within the bbox of the lasso tool
+            -- Unfortunately, correct behavior of bounding boxes is only guaranteed from version 7.2.29 onward (see https://github.com/otfried/ipe/issues/493)
+            if IPELIB_VERSION < 70229 or lassoBbox:contains(objBbox) then
                 if self:containsObjectExact(obj, EYE) then
                     if sel then
                         self.page:setSelect(i, SELECT_TYPE.notSelected)
@@ -296,7 +295,7 @@ function LASSOTOOL:applySelection()
                         newPrim = i
                     end
                 end
-            -- end
+            end
         end
     end
     if newPrim ~= nil then
