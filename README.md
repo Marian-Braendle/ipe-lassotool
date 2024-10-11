@@ -8,6 +8,14 @@ The main difference to the normal, rectangular selection tool is that arbitrary 
 
 Select `Ipelets -> Lasso Select` or use the configured shortcut (line 13) to enter the selection mode.
 
+You can also use a mouse binding to start the tool. For example, if you want to bind it to CTRL+Left Mouse, you can write the following:
+```lua
+mouse.left_control = function (model, modifiers)
+    tool = LASSOTOOL:new(model)
+    tool:mouseButton(1, modifiers, true)
+end
+```
+
 Start dragging the mouse to draw a selection polygon.
 If you release the mouse, the objects inside the polygon are selected.
 Additive selection can be performed by holding the _shift_ key.
