@@ -283,7 +283,7 @@ function LASSOTOOL:applySelection()
         -- Object is in view and not in a locked layer
         if self.page:visible(self.model.vno, i) and not self.page:isLocked(layer) then
             local objBbox = R()
-            obj:addToBBox(objBbox, EYE)
+            obj:addToBBox(objBbox, EYE, false)
             -- For optimization, ignore objects whose bbox is not completely within the bbox of the lasso tool
             -- Unfortunately, correct behavior of bounding boxes is only guaranteed from version 7.2.29 onward (see https://github.com/otfried/ipe/issues/493)
             if IPELIB_VERSION < 70229 or lassoBbox:contains(objBbox) then
